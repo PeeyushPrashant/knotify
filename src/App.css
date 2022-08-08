@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Acme&family=Pacifico&display=swap");
+
+:root {
+  --bg-color: #edf2f6;
+  --card-shadow: #aeb5bb;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto Slab", serif;
+}
+.App {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+.shadow {
+  box-shadow: 0 1px 2px var(--card-shadow);
+}
+.search-shadow {
+  box-shadow: 1px 2px 2px #3482f6;
+}
+.h1-heading {
+  font-family: "Pacifico", cursive;
+}
+.list-option:hover {
+  background-color: rgb(255 255 255);
+  border-radius: 1rem;
+  cursor: pointer;
+  box-shadow: 0 1px 2px var(--card-shadow);
+}
