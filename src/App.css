@@ -4,6 +4,7 @@
 :root {
   --bg-color: #edf2f6;
   --card-shadow: #aeb5bb;
+  --backdrop: rgba(63, 61, 70, 0.7);
 }
 
 body {
@@ -18,7 +19,7 @@ body {
   box-shadow: 0 1px 2px var(--card-shadow);
 }
 .search-shadow {
-  box-shadow: 1px 2px 2px #3482f6;
+  box-shadow: 1px 2px 2px #3d84ee;
 }
 .h1-heading {
   font-family: "Pacifico", cursive;

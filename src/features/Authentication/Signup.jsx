@@ -42,7 +42,7 @@ export const Signup=()=>{
                 onClick={submitSignupDetails}
                 >Create Account</button>
                 <p className="font-medium cursor-pointer"
-                onClick={()=>navigate("/")}
+                onClick={()=>navigate("/login")}
                 >Already have an account?</p>
             </div>
         </div>

@@ -9,14 +9,12 @@ export const Login=()=>{
     const dispatch= useDispatch();
 
     const testUser=()=>{
-          setLogin({email:"adarshbalika@gmail.com",password:"adarshBalika123"})
+          setLogin({email:"prashantpeeyush@gmail.com",password:"prashant123"})
     }
     const submitLoginDetails=(e)=>{
         e.preventDefault();
-    //    if(e.innerText==="Sign In With Test")
-    //      setLogin({email:"adarshbalika",password:"adarshBalika123"})
         dispatch(
-            handleLogin({username:login.email,password:login.password})
+            handleLogin({username:login.email,password:login.password},setLogin)
         )
     }
     return(
