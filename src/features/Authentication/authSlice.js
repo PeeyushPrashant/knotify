@@ -9,11 +9,9 @@ const initialState = {
 
 export const handleLogin = createAsyncThunk(
   "auth/handleLogin",
-  async ({ username, password }, thunkAPI) => {
+  async ({ username, password }, setLogin, thunkAPI) => {
     try {
-      console.log(username, password, "authSlice");
       const response = await loginServices(username, password);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -40,12 +38,19 @@ export const handleSignup = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
+  reducers: {
+    logOutHandler: (state) => {
+      console.log("logOut");
+      localStorage.removeItem("auth");
+      state.token = null;
+      state.user = null;
+    },
+  },
   extraReducers: {
     [handleSignup.pending]: (state) => {
       state.isLoading = true;
     },
     [handleSignup.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.isLoading = false;
       state.user = action.payload.createdUser;
       state.token = action.payload.encodedToken;
@@ -64,7 +69,6 @@ const authSlice = createSlice({
       state.isLoading = true;
     },
     [handleLogin.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.isLoading = false;
       state.user = action.payload.foundUser;
       state.token = action.payload.encodedToken;
@@ -76,10 +80,12 @@ const authSlice = createSlice({
         })
       );
     },
-    [handleLogin.fulfilled]: (state) => {
+    [handleLogin.rejected]: (state) => {
       state.isLoading = false;
     },
   },
 });
 
 export const authReducer = authSlice.reducer;
+
+export const { logOutHandler } = authSlice.actions;

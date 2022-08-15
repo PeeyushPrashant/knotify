@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom"
-
+import { logOutHandler } from "../../features/Authentication/authSlice"
+import { useDispatch } from "react-redux"
 export const Aside=()=>{
+    const dispatch= useDispatch();
     return(
         <>
         <aside className="w-64 sticky top-0 left-0 flex flex-col h-screen gap-4 py-4 text-gray-500">
-        <h1 className="text-blue-500 mb-2.5 text-4xl h1-heading pl-4">Knotify</h1>
+        <h1 className="text-blue-400 mb-2.5 text-4xl h1-heading pl-4">Knotify</h1>
             {/* <NavLink> */}
                 <div className="flex flex-row gap-4 pl-4 w-full h-10 items-center list-option">
                 <i className="fas fa-home text-xl"></i>
@@ -30,7 +32,9 @@ export const Aside=()=>{
                 </div>
             {/* </NavLink> */}
             {/* <NavLink> */}
-                <div className="flex flex-row gap-4 pl-4 w-full h-10 items-center list-option">
+                <div className="flex flex-row gap-4 pl-4 w-full h-10 items-center list-option"
+                onClick={()=>dispatch(logOutHandler())}
+                >
                 <i className="fas fa-sign-out-alt text-xl"></i>
                     <p className="font-semibold">Logout</p>
                 </div>
