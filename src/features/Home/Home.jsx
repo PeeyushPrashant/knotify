@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { Aside } from "../../components"
-import { FollowCard } from "../../components"
+import { Aside,FollowCard } from "../../components"
 import { Modal } from "./Modal/Modal"
 import { SinglePost } from "./SinglePost"
 import { useDispatch,useSelector } from "react-redux"
@@ -30,7 +29,6 @@ export const Home=()=>{
            )
        }
     },[user,allPosts]);
-
 
     return(
         <div className="flex flex-row justify-center w-10/12 gap-6 m-auto ">
@@ -67,7 +65,9 @@ export const Home=()=>{
                     />
                 )
             })}
-            
+             <div className="w-full justify-center items-center text-xl text-gray-500 font-bold">
+             <p className="text-center">Follow some users to see feed</p>
+             </div>
             </div>
             {modal && <Modal
             setModal={setModal}

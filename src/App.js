@@ -1,5 +1,5 @@
 import "./App.css";
-import { Login, Signup, Home } from "./features";
+import { Login, Signup, Home, Explore, BookMark } from "./features";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getAllPosts, getUserPost } from "./features/Home/postSlice";
 import { getAllUsers } from "./features/Profile/userSlice";
@@ -27,6 +27,8 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/bookmark" element={<BookMark />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>

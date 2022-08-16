@@ -3,6 +3,8 @@ import {
   getAllPostServices,
   getUserPostServices,
   addUserPostServices,
+  addBookMarkServices,
+  removeBookMarkServices,
 } from "../../Services/postServices";
 
 const initialState = {
@@ -40,10 +42,23 @@ export const addUserPost = createAsyncThunk(
   async (postData, thunkAPI) => {
     try {
       const token = JSON.parse(localStorage.getItem("auth"))?.token;
-      console.log(postData);
       const response = await addUserPostServices(postData, token);
-      console.log(response);
       return response.data.posts;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const addAndRemoveBookmark = createAsyncThunk(
+  "post/addAndRemoveBookmark",
+  async ({ postId, isBookMark }, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = isBookMark
+        ? await addBookMarkServices(postId, token)
+        : await removeBookMarkServices(postId, token);
+      return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
     }
@@ -83,6 +98,16 @@ const postSlice = createSlice({
       state.allPosts = action.payload;
     },
     [addUserPost.rejected]: (state) => {
+      state.postStatus = "rejected";
+    },
+    [addAndRemoveBookmark.pending]: (state) => {
+      state.postStatus = "pending";
+    },
+    [addAndRemoveBookmark.fulfilled]: (state, action) => {
+      state.postStatus = "fulfilled";
+      state.allPosts = action.payload.posts;
+    },
+    [addAndRemoveBookmark.rejected]: (state) => {
       state.postStatus = "rejected";
     },
   },

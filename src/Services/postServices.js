@@ -17,3 +17,25 @@ export const addUserPostServices = async (postData, token) =>
       },
     }
   );
+
+export const addBookMarkServices = async (postId, token) =>
+  await axios.post(
+    `/api/users/bookmark/${postId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+
+export const removeBookMarkServices = async (postId, token) =>
+  await axios.post(
+    `/api/users/remove-bookmark/${postId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
