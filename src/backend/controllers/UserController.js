@@ -121,22 +121,9 @@ export const bookmarkPostHandler = function (schema, request) {
         }
       );
     }
-    const isBookmarked = user.bookmarks.some(
-      (currPost) => currPost._id === postId
-    );
-    if (isBookmarked) {
-      return new Response(
-        400,
-        {},
-        { errors: ["This Post is already bookmarked"] }
-      );
-    }
-    user.bookmarks.push(post);
-    this.db.users.update(
-      { _id: user._id },
-      { ...user, updatedAt: formatDate() }
-    );
-    return new Response(200, {}, { bookmarks: user.bookmarks });
+    post.bookmark.push(user);
+    this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
+    return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {
     return new Response(
       500,
@@ -156,6 +143,8 @@ export const bookmarkPostHandler = function (schema, request) {
 export const removePostFromBookmarkHandler = function (schema, request) {
   const { postId } = request.params;
   let user = requiresAuth.call(this, request);
+  let post = schema.posts.findBy({ _id: postId }).attrs;
+
   try {
     if (!user) {
       return new Response(
@@ -168,21 +157,15 @@ export const removePostFromBookmarkHandler = function (schema, request) {
         }
       );
     }
-    const isBookmarked = user.bookmarks.some(
-      (currPost) => currPost._id === postId
+
+    const filteredBookmarks = post.bookmark.filter(
+      (currPost) => currPost.username !== user.username
     );
-    if (!isBookmarked) {
-      return new Response(400, {}, { errors: ["Post not bookmarked yet"] });
-    }
-    const filteredBookmarks = user.bookmarks.filter(
-      (currPost) => currPost._id !== postId
+    this.db.posts.update(
+      { _id: postId },
+      { ...post, bookmark: filteredBookmarks, updatedAt: formatDate() }
     );
-    user = { ...user, bookmarks: filteredBookmarks };
-    this.db.users.update(
-      { _id: user._id },
-      { ...user, updatedAt: formatDate() }
-    );
-    return new Response(200, {}, { bookmarks: user.bookmarks });
+    return new Response(200, {}, { posts: this.db.posts });
   } catch (error) {
     return new Response(
       500,

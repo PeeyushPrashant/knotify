@@ -8,7 +8,7 @@ export const FollowCard=()=>{
     useEffect(()=>{
        setSuggestion(
            allUsers?.filter((ele)=>ele?.username !== user?.username)
-           ?.filter((ele2)=> !user?.following.find((item)=> item?._id=== ele2?._id))
+           ?.filter((ele2)=> !user?.following.some((item)=> item?._id=== ele2?._id))
            ?.slice(0,4)
        )
     },[user,allUsers])

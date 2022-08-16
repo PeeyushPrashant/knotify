@@ -26,7 +26,7 @@ export const users = [
     userHandler: "coolravi",
     bio: "Coder & an enthusiastic learner",
     profilePic:
-      "https://res.cloudinary.com/doohtm4bs/image/upload/v1659945478/Social%20Media/FollowCard/range_rover_n3d1zp.jpg",
+      "https://res.cloudinary.com/doohtm4bs/image/upload/v1659861764/Social%20Media/FollowCard/virat_vzi9pb.jpg",
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
