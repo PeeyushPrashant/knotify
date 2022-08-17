@@ -2,18 +2,23 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { handleSignup } from "./authSlice";
 import {useSelector, useDispatch} from "react-redux"
+import { useEffect } from "react";
+
 
 export const Signup=()=>{
     const navigate=useNavigate();
     const [signup,setSignup]= useState({name:"",email:"",password:""});
     const dispatch= useDispatch();
-
+    const {token} = useSelector((state)=>state.auth);
     const submitSignupDetails=(e)=>{
         e.preventDefault();
       dispatch(
           handleSignup({username:signup.email,password:signup.password,name:signup.name})
       )
     }
+    useEffect(()=>{
+        token && navigate("/")
+    },[token])
     return(
         <>
         <div className="w-screen h-screen flex flex-row justify-center items-center ">
