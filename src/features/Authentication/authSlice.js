@@ -40,7 +40,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logOutHandler: (state) => {
-      console.log("logOut");
       localStorage.removeItem("auth");
       state.token = null;
       state.user = null;

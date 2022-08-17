@@ -5,6 +5,9 @@ import {
   addUserPostServices,
   addBookMarkServices,
   removeBookMarkServices,
+  addCommentServices,
+  editCommentServices,
+  deleteCommentServices,
 } from "../../Services/postServices";
 
 const initialState = {
@@ -65,6 +68,51 @@ export const addAndRemoveBookmark = createAsyncThunk(
   }
 );
 
+export const addComment = createAsyncThunk(
+  "post/addComment",
+  async ({ postId, commentData }, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = await addCommentServices(postId, commentData, token);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const editComment = createAsyncThunk(
+  "post/editComment",
+  async ({ postId, commentId, commentData }, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = await editCommentServices(
+        postId,
+        commentId,
+        commentData,
+        token
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteComment = createAsyncThunk(
+  "post/deleteComment",
+  async ({ postId, commentId }, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = await deleteCommentServices(postId, commentId, token);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -109,6 +157,38 @@ const postSlice = createSlice({
     },
     [addAndRemoveBookmark.rejected]: (state) => {
       state.postStatus = "rejected";
+    },
+    [addComment.pending]: (state) => {
+      state.postStatus = "pending";
+    },
+    [addComment.fulfilled]: (state, action) => {
+      state.postStatus = "fulfilled";
+      state.allPosts = action.payload.posts;
+    },
+    [addComment.rejected]: (state) => {
+      state.postStatus = "rejected";
+    },
+    [editComment.pending]: (state) => {
+      state.postStatus = "pending";
+    },
+    [editComment.fulfilled]: (state, action) => {
+      state.postStatus = "fulfilled";
+      state.allPosts = action.payload.posts;
+    },
+    [editComment.rejected]: (state, action) => {
+      state.postStatus = "rejected";
+      state.allPosts = action.payload;
+    },
+    [deleteComment.pending]: (state) => {
+      state.postStatus = "pending";
+    },
+    [deleteComment.fulfilled]: (state, action) => {
+      state.postStatus = "fulfilled";
+      state.allPosts = action.payload.posts;
+    },
+    [deleteComment.rejected]: (state, action) => {
+      state.postStatus = "rejected";
+      state.allPosts = action.payload.posts;
     },
   },
 });

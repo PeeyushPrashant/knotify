@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { handleLogin } from "./authSlice";
 import { useSelector,useDispatch } from "react-redux";
@@ -7,7 +7,7 @@ export const Login=()=>{
     const navigate= useNavigate();
     const [login,setLogin]= useState({email:"",password:""});
     const dispatch= useDispatch();
-
+    const {token} = useSelector((state)=>state.auth);
     const testUser=()=>{
           setLogin({email:"prashantpeeyush@gmail.com",password:"prashant123"})
     }
@@ -17,6 +17,11 @@ export const Login=()=>{
             handleLogin({username:login.email,password:login.password},setLogin)
         )
     }
+     
+    useEffect(()=>{
+        token && navigate("/")
+    },[token])
+
     return(
         <>
         <div className="w-screen h-screen flex flex-row justify-center items-center ">

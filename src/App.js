@@ -16,7 +16,6 @@ function App() {
       dispatch(getAllPosts());
       dispatch(getAllUsers());
       dispatch(getUserPost(user.username));
-      navigate("/");
     }
     if (!token) {
       navigate("/login");
