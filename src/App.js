@@ -1,5 +1,13 @@
 import "./App.css";
-import { Login, Signup, Home, Explore, BookMark } from "./features";
+import {
+  Login,
+  Signup,
+  Home,
+  Explore,
+  BookMark,
+  Profile,
+  AnyProfile,
+} from "./features";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getAllPosts, getUserPost } from "./features/Home/postSlice";
 import { getAllUsers } from "./features/Profile/userSlice";
@@ -10,6 +18,7 @@ import { useEffect } from "react";
 function App() {
   const dispatch = useDispatch();
   const { token, user } = useSelector((state) => state.auth);
+  const { postModal, postInfo } = useSelector((state) => state.postModal);
   const navigate = useNavigate();
   useEffect(() => {
     if (token) {
@@ -21,13 +30,14 @@ function App() {
       navigate("/login");
     }
   }, [token]);
-
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/bookmark" element={<BookMark />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/user-profile/:userId" element={<AnyProfile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>

@@ -42,7 +42,7 @@ export const Comment= ({comment,postId})=>{
                 </div>:
                  <p className="text-sm text-gray-500">{comment.text}</p>
                 }
-                {/* <p className="text-sm text-gray-500">{comment.text}</p> */}
+                
                 {editModal && <div className="flex-flex-col py-1 bg-white rounded-lg gap-2 border border-slate-400 absolute right-5 top-4">
                     <section className="flex flex-row px-2 text-gray-500 gap-3 items-center cursor-pointer hover:bg-slate-200"
                     onClick={()=>{
