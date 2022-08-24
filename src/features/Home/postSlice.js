@@ -5,9 +5,13 @@ import {
   addUserPostServices,
   addBookMarkServices,
   removeBookMarkServices,
+  likePostServices,
+  dislikePostServices,
   addCommentServices,
   editCommentServices,
   deleteCommentServices,
+  editUserPostServices,
+  deletePostServices,
 } from "../../Services/postServices";
 
 const initialState = {
@@ -46,9 +50,36 @@ export const addUserPost = createAsyncThunk(
     try {
       const token = JSON.parse(localStorage.getItem("auth"))?.token;
       const response = await addUserPostServices(postData, token);
+      console.log(response);
       return response.data.posts;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const editUserPost = createAsyncThunk(
+  "post/editUserPost",
+  async (postData, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = await editUserPostServices(postData, token);
+      return response.data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteUserPost = createAsyncThunk(
+  "post/deleteUserPost",
+  async (postId, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = await deletePostServices(postId, token);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -64,6 +95,22 @@ export const addAndRemoveBookmark = createAsyncThunk(
       return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const likeAndDislikePost = createAsyncThunk(
+  "post/likeAndDislikePost",
+  async ({ postId, isLike }, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = isLike
+        ? await likePostServices(postId, token)
+        : await dislikePostServices(postId, token);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -148,6 +195,28 @@ const postSlice = createSlice({
     [addUserPost.rejected]: (state) => {
       state.postStatus = "rejected";
     },
+    [editUserPost.pending]: (state) => {
+      state.postStatus = "pending";
+    },
+    [editUserPost.fulfilled]: (state, action) => {
+      state.postStatus = "fulfilled";
+      state.allPosts = action.payload.posts;
+    },
+    [editUserPost.rejected]: (state, action) => {
+      state.postStatus = "rejected";
+      state.allPosts = action.payload;
+    },
+    [deleteUserPost.pending]: (state) => {
+      state.postStatus = "pending";
+    },
+    [deleteUserPost.fulfilled]: (state, action) => {
+      state.postStatus = "fulfilled";
+      state.allPosts = action.payload.posts;
+    },
+    [deleteUserPost.rejected]: (state, action) => {
+      state.postStatus = "rejected";
+      state.allPosts = action.payload;
+    },
     [addAndRemoveBookmark.pending]: (state) => {
       state.postStatus = "pending";
     },
@@ -157,6 +226,17 @@ const postSlice = createSlice({
     },
     [addAndRemoveBookmark.rejected]: (state) => {
       state.postStatus = "rejected";
+    },
+    [likeAndDislikePost.pending]: (state) => {
+      state.postStatus = "pending";
+    },
+    [likeAndDislikePost.fulfilled]: (state, action) => {
+      state.postStatus = "fulfilled";
+      state.allPosts = action.payload.posts;
+    },
+    [likeAndDislikePost.rejected]: (state, action) => {
+      state.postStatus = "rejected";
+      state.allPosts = action.payload;
     },
     [addComment.pending]: (state) => {
       state.postStatus = "pending";

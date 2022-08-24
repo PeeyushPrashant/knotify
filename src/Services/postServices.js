@@ -18,6 +18,26 @@ export const addUserPostServices = async (postData, token) =>
     }
   );
 
+export const editUserPostServices = async (postData, token) =>
+  await axios.post(
+    `/api/posts/edit/${postData._id}`,
+    {
+      postData,
+    },
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+
+export const deletePostServices = async (postId, token) =>
+  await axios.delete(`/api/posts/${postId}`, {
+    headers: {
+      authorization: token,
+    },
+  });
+
 export const addBookMarkServices = async (postId, token) =>
   await axios.post(
     `/api/users/bookmark/${postId}`,
@@ -32,6 +52,28 @@ export const addBookMarkServices = async (postId, token) =>
 export const removeBookMarkServices = async (postId, token) =>
   await axios.post(
     `/api/users/remove-bookmark/${postId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+
+export const likePostServices = async (postId, token) =>
+  await axios.post(
+    `/api/posts/like/${postId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+
+export const dislikePostServices = async (postId, token) =>
+  await axios.post(
+    `/api/posts/dislike/${postId}`,
     {},
     {
       headers: {

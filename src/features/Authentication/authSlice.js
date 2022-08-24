@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { signupServices, loginServices } from "../../Services/services";
+import {
+  signupServices,
+  loginServices,
+  updateUserService,
+} from "../../Services/services";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem("auth"))?.user,
@@ -31,6 +35,19 @@ export const handleSignup = createAsyncThunk(
       return thunkAPI.rejectWithValue(
         "User Already exist with entered credentials"
       );
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  "auth/updateUser",
+  async (userData, thunkAPI) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("auth"))?.token;
+      const response = await updateUserService(token, userData);
+      return response.data.user;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -80,6 +97,16 @@ const authSlice = createSlice({
       );
     },
     [handleLogin.rejected]: (state) => {
+      state.isLoading = false;
+    },
+    [updateUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateUser.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+    },
+    [updateUser.rejected]: (state) => {
       state.isLoading = false;
     },
   },
