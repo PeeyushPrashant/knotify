@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addAndRemoveBookmark,addComment,deleteUserPost,likeAndDislikePost } from "./postSlice";
 import { Comment } from "./Comment";
 import { openPostModal } from "./Modal/postModalSlice";
+import { useNavigate } from "react-router-dom";
 
 export const SinglePost=({post})=>{
     const {user} = useSelector((state)=>state.auth);
@@ -11,6 +12,7 @@ export const SinglePost=({post})=>{
     const [viewAll,setViewAll] = useState(2);
     const [comment,setComment] = useState("");
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {
         _id,
         content,
@@ -55,9 +57,12 @@ export const SinglePost=({post})=>{
             <img src={userInfo?.profilePic}
                alt="" className="h-12 w-12 object-cover rounded-full"/>
                <div className="flex flex-col gap-1 w-full">
-                   <section className="flex flex-row gap-2 items-center">
-                   <h4 className="text-slate-800 font-semibold">{userInfo?.name}</h4>
-                   <p className="text-gray-400 text-sm">@{userInfo?.userHandler}</p>
+                   <section className="flex flex-row gap-2 items-center"
+                    onClick={()=>navigate(`/user-profile/${userInfo?.userHandler}`)}
+                   >
+                   <h4 className="text-slate-800 font-semibold cursor-pointer"
+                   >{userInfo?.name}</h4>
+                   <p className="text-gray-400 text-sm cursor-pointer">@{userInfo?.userHandler}</p>
                    </section>
                    <p className="text-gray-400 text-sm">{`${year}/${month}/${day}  ${hour}:${minute}`}</p>
                </div>
@@ -118,13 +123,13 @@ export const SinglePost=({post})=>{
                     <section className="flex flex-row px-2 text-gray-500 gap-3 items-center cursor-pointer hover:bg-slate-200"
                     onClick={editPostHandler}
                     >
-                    <i class="far fa-edit text-sm"></i>
+                    <i className="far fa-edit text-sm"></i>
                     <p>Edit</p>
                     </section>
                     <section className="flex flex-row px-2  text-gray-500 gap-3 items-center cursor-pointer hover:bg-slate-200"
                     onClick={()=>dispatch(deleteUserPost(_id))}
                     >
-                    <i class="fas fa-trash text-sm"></i>
+                    <i className="fas fa-trash text-sm"></i>
                     <p>Delete</p>
                     </section>
             </div>

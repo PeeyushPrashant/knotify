@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom";
 import { editComment,deleteComment } from "./postSlice";
 
 export const Comment= ({comment,postId})=>{
     const {allUsers} = useSelector((state)=>state.user);
     const {user} = useSelector((state)=>state.auth);
     const dispatch =useDispatch();
+    const navigate = useNavigate();
     const [editModal,setEditModal]= useState(false);
     const [inputComment,setInputComment] = useState(comment.text)
     const [isEdit,setIsEdit] = useState(false);
@@ -18,14 +20,17 @@ export const Comment= ({comment,postId})=>{
     return(
         <div className="w-full flex flex-row gap-3">
            <img src={userInfo?.profilePic}
-           alt="" className="h-8 w-8 object-cover rounded-full"/>
+             onClick={()=>navigate(`/user-profile/${userInfo?.userHandler}`)}
+           alt="" className="h-8 w-8 object-cover rounded-full cursor-pointer"/>
            <section className="w-full flex flex-col gap-2 bg-slate-200 rounded-xl py-1 px-3 relative">
                 <header className="w-full flex flex-row items-center justify-between">
-                    <p className="text-sm font-semibold">{userInfo?.name}</p>
+                    <p className="text-sm font-semibold cursor-pointer"
+                     onClick={()=>navigate(`/user-profile/${userInfo?.userHandler}`)}
+                    >{userInfo?.name}</p>
                    {comment.username=== user?.username && 
                    <span className={`cursor-pointer ${isEdit && "hidden"}`}
                    onClick={()=>setEditModal((curr)=>!curr)}
-                   ><i class="fas fa-ellipsis-v text-sm text-gray-500"></i></span>}
+                   ><i className="fas fa-ellipsis-v text-sm text-gray-500"></i></span>}
                 </header>
                 {isEdit?
                 <div className="flex flex-row gap-0.5">
@@ -50,7 +55,7 @@ export const Comment= ({comment,postId})=>{
                         setEditModal(false);
                     }}
                     >
-                    <i class="far fa-edit text-sm"></i>
+                    <i className="far fa-edit text-sm"></i>
                     <p>Edit</p>
                     </section>
                     <section className="flex flex-row px-2  text-gray-500 gap-3 items-center cursor-pointer hover:bg-slate-200"
@@ -58,7 +63,7 @@ export const Comment= ({comment,postId})=>{
                         dispatch(deleteComment({postId: postId, commentId: comment._id}))
                     }}
                     >
-                    <i class="fas fa-trash text-sm"></i>
+                    <i className="fas fa-trash text-sm"></i>
                     <p>Delete</p>
                     </section>
                 </div>}
