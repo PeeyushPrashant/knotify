@@ -33,4 +33,11 @@ $ npm start
 - React Router v6
 - Tailwind CSS
 
+
 ## **Demo -**
+
+
+
+https://user-images.githubusercontent.com/68290209/188369947-3a10d278-7fbd-4c22-bcdb-65fcfe2b71a7.mp4
+
+
